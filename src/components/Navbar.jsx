@@ -66,6 +66,16 @@ export default function Navbar({ onBookClick }) {
     };
   }, [mobileMenuOpen]);
 
+  // Safely initialize Google Translate once navbar is rendered
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (typeof window.googleTranslateElementInit === 'function') {
+        window.googleTranslateElementInit();
+      }
+    }, 500);
+    return () => clearTimeout(timer);
+  }, []);
+
   const navLinks = [
     { name: 'Home', href: '#home', id: 'home', icon: Home },
     { name: 'About', href: '#about', id: 'about', icon: Info },
