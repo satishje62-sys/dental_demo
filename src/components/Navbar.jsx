@@ -16,14 +16,18 @@ import {
   Users,
   Star,
   HelpCircle,
-  Mail
+  Mail,
+  Moon,
+  Sun
 } from 'lucide-react';
 import { HOSPITAL_INFO } from '../data/dentalData';
+import { useTheme } from '../contexts/ThemeContext';
 
 export default function Navbar({ onBookClick }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
+  const { isDark, toggleTheme } = useTheme();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -136,8 +140,8 @@ export default function Navbar({ onBookClick }) {
       <header 
         className={`sticky top-0 z-40 w-full transition-colors duration-200 ${
           isScrolled 
-            ? 'bg-white shadow-sm border-b border-slate-100 py-2.5 sm:py-3' 
-            : 'bg-white border-b border-slate-100/80 py-3 sm:py-4'
+            ? 'bg-white dark:bg-[#0b1f36] shadow-sm border-b border-slate-100 dark:border-slate-800 py-2.5 sm:py-3' 
+            : 'bg-white dark:bg-[#0b1f36] border-b border-slate-100/80 dark:border-slate-800 py-3 sm:py-4'
         }`}
       >
         <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8">
@@ -161,10 +165,10 @@ export default function Navbar({ onBookClick }) {
                 </svg>
               </div>
               <div className="flex flex-col">
-                <span className="font-heading font-bold text-lg sm:text-2xl text-[#0b1f36] tracking-tight leading-none">
+                <span className="font-heading font-bold text-lg sm:text-2xl text-[#0b1f36] dark:text-white tracking-tight leading-none">
                   SmileCare
                 </span>
-                <span className="text-[9px] sm:text-xs font-semibold uppercase tracking-wider text-sky-600 mt-0.5">
+                <span className="text-[9px] sm:text-xs font-semibold uppercase tracking-wider text-sky-600 dark:text-sky-400 mt-0.5">
                   Dental Hospital
                 </span>
               </div>
@@ -179,8 +183,8 @@ export default function Navbar({ onBookClick }) {
                   onClick={(e) => handleLinkClick(e, link.href)}
                   className={`px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
                     activeSection === link.id
-                      ? 'text-blue-700 bg-blue-50/80 font-semibold'
-                      : 'text-slate-600 hover:text-[#0b1f36] hover:bg-slate-50'
+                      ? 'text-blue-700 bg-blue-50/80 dark:text-sky-400 dark:bg-sky-900/30 font-semibold'
+                      : 'text-slate-600 dark:text-slate-300 hover:text-[#0b1f36] dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800'
                   }`}
                 >
                   {link.name}
@@ -188,13 +192,23 @@ export default function Navbar({ onBookClick }) {
               ))}
             </nav>
 
-            {/* Desktop Action Buttons */}
+            {/* Desktop Action Buttons & Toggles */}
             <div className="hidden sm:flex items-center gap-3">
+              <div id="google_translate_element" className="mr-2"></div>
+              
+              <button
+                onClick={toggleTheme}
+                className="p-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+                aria-label="Toggle theme"
+              >
+                {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+              </button>
+
               <a
                 href={`tel:${HOSPITAL_INFO.phoneRaw}`}
-                className="hidden xl:inline-flex items-center gap-2 px-3 py-2 text-sm font-semibold text-slate-700 hover:text-blue-700 rounded-lg hover:bg-slate-100 transition-colors"
+                className="hidden xl:inline-flex items-center gap-2 px-3 py-2 text-sm font-semibold text-slate-700 dark:text-slate-200 hover:text-blue-700 dark:hover:text-sky-400 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
               >
-                <div className="w-8 h-8 rounded-full bg-blue-50 text-blue-700 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-full bg-blue-50 dark:bg-sky-900/40 text-blue-700 dark:text-sky-400 flex items-center justify-center">
                   <Phone className="w-4 h-4" />
                 </div>
                 <span>{HOSPITAL_INFO.phone}</span>
@@ -203,9 +217,9 @@ export default function Navbar({ onBookClick }) {
               <button
                 type="button"
                 onClick={onBookClick}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm text-white bg-gradient-to-r from-[#0f2b48] to-[#1e4e85] hover:from-[#0b1f36] hover:to-[#153860] shadow-md shadow-blue-900/15 transition-all transform hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm text-white bg-gradient-to-r from-[#0f2b48] to-[#1e4e85] dark:from-sky-600 dark:to-blue-800 hover:from-[#0b1f36] hover:to-[#153860] shadow-md shadow-blue-900/15 transition-all transform hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
               >
-                <Calendar className="w-4 h-4 text-sky-300" />
+                <Calendar className="w-4 h-4 text-sky-300 dark:text-sky-200" />
                 <span>Book Appointment</span>
               </button>
             </div>
@@ -213,21 +227,28 @@ export default function Navbar({ onBookClick }) {
             {/* Mobile Actions: Book pill + 3-line Hamburger Button */}
             <div className="flex items-center gap-2 sm:hidden">
               <button
+                onClick={toggleTheme}
+                className="p-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300"
+                aria-label="Toggle theme"
+              >
+                {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+              </button>
+              <button
                 type="button"
                 onClick={onBookClick}
-                className="px-3 py-1.5 text-xs font-bold text-white bg-[#0f2b48] active:bg-[#0b1f36] rounded-lg shadow-xs flex items-center gap-1 cursor-pointer"
+                className="px-3 py-1.5 text-xs font-bold text-white bg-[#0f2b48] dark:bg-sky-700 active:bg-[#0b1f36] rounded-lg shadow-xs flex items-center gap-1 cursor-pointer"
               >
-                <Calendar className="w-3 h-3 text-sky-300" />
+                <Calendar className="w-3 h-3 text-sky-300 dark:text-sky-100" />
                 <span>Book</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen(true)}
-                className="w-10 h-10 rounded-xl text-slate-800 bg-slate-100 hover:bg-slate-200 active:bg-slate-300 flex items-center justify-center focus:outline-none transition-colors cursor-pointer"
+                className="w-10 h-10 rounded-xl text-slate-800 dark:text-white bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 active:bg-slate-300 flex items-center justify-center focus:outline-none transition-colors cursor-pointer"
                 aria-label="Open navigation sidebar"
               >
-                <Menu className="w-5 h-5 text-slate-800" />
+                <Menu className="w-5 h-5" />
               </button>
             </div>
 
@@ -250,7 +271,7 @@ export default function Navbar({ onBookClick }) {
           />
 
           {/* Right-Side Drawer Panel */}
-          <div className="relative w-[84%] max-w-sm bg-white h-full shadow-2xl flex flex-col z-[101] animate-in slide-in-from-right duration-200">
+          <div className="relative w-[84%] max-w-sm bg-white dark:bg-[#071526] h-full shadow-2xl flex flex-col z-[101] animate-in slide-in-from-right duration-200">
             
             {/* Sidebar Top Header */}
             <div className="px-5 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/70 shrink-0">
