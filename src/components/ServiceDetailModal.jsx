@@ -44,6 +44,17 @@ export default function ServiceDetailModal({ service, isOpen, onClose, onBookSer
 
         {/* Modal Body */}
         <div className="p-5 sm:p-6 space-y-5 overflow-y-auto">
+          {/* Service Image Preview */}
+          {service.image && (
+            <div className="relative rounded-2xl overflow-hidden aspect-16/9 bg-slate-100 shadow-xs border border-slate-100">
+              <img
+                src={service.image}
+                alt={service.title}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          )}
+
           {/* Quick Metrics */}
           <div className="grid grid-cols-2 gap-2.5 sm:gap-3 bg-slate-50 p-3 rounded-xl sm:rounded-2xl border border-slate-100">
             <div className="flex items-center gap-2">
