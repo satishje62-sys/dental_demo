@@ -3,6 +3,7 @@ import { ChevronDown, HelpCircle, Phone, MessageSquare } from 'lucide-react';
 import { FAQS, HOSPITAL_INFO } from '../data/dentalData';
 import { HINDI_DATA } from '../data/translations';
 import { useLanguage } from '../contexts/LanguageContext';
+import ScrollReveal from './ScrollReveal';
 
 export default function FaqSection({ onBookClick }) {
   const { t, isHindi } = useLanguage();
@@ -18,7 +19,7 @@ export default function FaqSection({ onBookClick }) {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="text-center mb-14">
+        <ScrollReveal animation="fade-up" className="text-center mb-14">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-sky-300 text-xs font-semibold uppercase tracking-wider mb-3">
             {t('faq_badge', 'Got Questions?')}
           </div>
@@ -28,16 +29,18 @@ export default function FaqSection({ onBookClick }) {
           <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
             {t('faq_subtitle', 'Helpful answers to common questions our patients have before visiting SmileCare Dental Hospital.')}
           </p>
-        </div>
+        </ScrollReveal>
 
-        {/* Accordion List */}
+        {/* Accordion List with Staggered ScrollReveal */}
         <div className="space-y-3.5">
-          {faqList.map((faq) => {
+          {faqList.map((faq, idx) => {
             const isOpen = openId === faq.id;
 
             return (
-              <div
+              <ScrollReveal
                 key={faq.id}
+                animation="fade-up"
+                delay={idx * 50}
                 className={`rounded-2xl border transition-all duration-200 overflow-hidden ${
                   isOpen
                     ? 'border-blue-300 dark:border-sky-500 bg-blue-50/30 dark:bg-sky-950/30 shadow-xs'
@@ -69,13 +72,13 @@ export default function FaqSection({ onBookClick }) {
                     <p>{faq.answer}</p>
                   </div>
                 )}
-              </div>
+              </ScrollReveal>
             );
           })}
         </div>
 
         {/* Still Have Questions Box */}
-        <div className="mt-12 bg-slate-50 dark:bg-[#0c1e33] rounded-2xl p-6 border border-slate-200 dark:border-slate-700 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+        <ScrollReveal animation="zoom-in" delay={150} className="mt-12 bg-slate-50 dark:bg-[#0c1e33] rounded-2xl p-6 border border-slate-200 dark:border-slate-700 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
           <div>
             <h4 className="text-sm sm:text-base font-bold text-[#0b1f36] dark:text-white">
               {t('faq_still_title', 'Still have questions about your oral health?')}
@@ -100,7 +103,7 @@ export default function FaqSection({ onBookClick }) {
               <span>{t('book_appointment', 'Book Appointment')}</span>
             </button>
           </div>
-        </div>
+        </ScrollReveal>
 
       </div>
     </section>

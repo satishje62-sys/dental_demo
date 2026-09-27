@@ -2,6 +2,7 @@ import React from 'react';
 import { Award, Cpu, ShieldCheck, Heart, FileCheck, Smile } from 'lucide-react';
 import { WHY_CHOOSE_US } from '../data/dentalData';
 import { useLanguage } from '../contexts/LanguageContext';
+import ScrollReveal from './ScrollReveal';
 
 const iconMap = {
   Award,
@@ -46,7 +47,7 @@ export default function WhyChooseUs() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-14">
+        <ScrollReveal animation="fade-up" className="text-center max-w-3xl mx-auto mb-14">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-blue-50 dark:bg-blue-900/40 text-blue-700 dark:text-sky-300 text-xs font-semibold uppercase tracking-wider mb-3">
             {t('why_badge', 'Why Patients Choose Us')}
           </div>
@@ -56,7 +57,7 @@ export default function WhyChooseUs() {
           <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
             {t('why_subtitle', 'We understand dental visits can sometimes feel intimidating. Here is how we ensure every visit is relaxing, gentle, and trustworthy.')}
           </p>
-        </div>
+        </ScrollReveal>
 
         {/* 6 Benefits Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -66,12 +67,14 @@ export default function WhyChooseUs() {
             const descText = getLocalizedWhyDesc(item);
 
             return (
-              <div
+              <ScrollReveal
                 key={item.id}
-                className="bg-white dark:bg-[#0c1e33] rounded-2xl p-6 sm:p-7 border border-slate-200/90 dark:border-slate-700/80 hover:border-blue-300 dark:hover:border-sky-500 shadow-xs hover:shadow-lg hover:shadow-blue-950/15 transition-all duration-200 group"
+                animation="fade-up"
+                delay={index * 70}
+                className="bg-white dark:bg-[#0c1e33] rounded-2xl p-6 sm:p-7 border border-slate-200/90 dark:border-slate-700/80 hover:border-blue-300 dark:hover:border-sky-500 shadow-xs hover:shadow-xl hover:shadow-blue-950/15 transition-all duration-300 group hover:-translate-y-1"
               >
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 rounded-xl bg-blue-50 dark:bg-sky-950/60 group-hover:bg-[#0f2b48] text-blue-700 dark:text-sky-400 group-hover:text-white flex items-center justify-center transition-colors duration-200 shrink-0">
+                  <div className="w-12 h-12 rounded-xl bg-blue-50 dark:bg-sky-950/60 group-hover:bg-[#0f2b48] text-blue-700 dark:text-sky-400 group-hover:text-white flex items-center justify-center transition-colors duration-200 shrink-0 shadow-xs">
                     <Icon className="w-6 h-6" />
                   </div>
                   <span className="text-xs font-bold text-slate-400 dark:text-slate-500 font-mono">
@@ -85,7 +88,7 @@ export default function WhyChooseUs() {
                 <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
                   {descText}
                 </p>
-              </div>
+              </ScrollReveal>
             );
           })}
         </div>

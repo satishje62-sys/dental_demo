@@ -9,11 +9,12 @@ import {
   HeartHandshake, 
   Cpu, 
   ArrowRight, 
-  Calendar,
-  Clock
+  Calendar, 
+  Clock 
 } from 'lucide-react';
 import { SERVICES } from '../data/dentalData';
 import { useLanguage } from '../contexts/LanguageContext';
+import ScrollReveal from './ScrollReveal';
 
 const iconMap = {
   ShieldCheck,
@@ -61,10 +62,10 @@ export default function ServicesSection({ onSelectService, onBookService }) {
 
   return (
     <section id="services" className="py-12 sm:py-24 bg-slate-50/70 dark:bg-[#071322] relative transition-colors">
-      <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-16">
+        <ScrollReveal animation="fade-up" className="text-center max-w-3xl mx-auto mb-10 sm:mb-16">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-blue-100/80 dark:bg-blue-900/40 text-blue-900 dark:text-sky-300 text-xs font-semibold uppercase tracking-wider mb-2.5">
             {t('services_badge', 'Our Dental Services')}
           </div>
@@ -74,19 +75,21 @@ export default function ServicesSection({ onSelectService, onBookService }) {
           <p className="text-sm sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
             {t('services_subtitle', 'Comprehensive dental care for every stage of your oral health journey. From routine dental prevention to advanced smile transformations.')}
           </p>
-        </div>
+        </ScrollReveal>
 
-        {/* 8 Services Grid with Images */}
+        {/* 8 Services Grid with Staggered ScrollReveal */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
-          {SERVICES.map((service) => {
+          {SERVICES.map((service, idx) => {
             const Icon = iconMap[service.icon] || ShieldCheck;
             const titleText = getLocalizedTitle(service);
             const descText = getLocalizedShortDesc(service);
 
             return (
-              <div
+              <ScrollReveal
                 key={service.id}
-                className="group relative bg-white dark:bg-[#0c1e33] rounded-2xl overflow-hidden border border-slate-200/90 dark:border-slate-700/80 hover:border-blue-300 dark:hover:border-sky-500 shadow-xs hover:shadow-xl hover:shadow-blue-950/20 transition-all duration-300 flex flex-col justify-between transform hover:-translate-y-1"
+                animation="fade-up"
+                delay={idx * 60}
+                className="group relative bg-white dark:bg-[#0c1e33] rounded-2xl overflow-hidden border border-slate-200/90 dark:border-slate-700/80 hover:border-blue-300 dark:hover:border-sky-500 shadow-xs hover:shadow-xl hover:shadow-blue-950/20 transition-all duration-300 flex flex-col justify-between transform hover:-translate-y-1.5"
               >
                 <div>
                   {/* Top Image Frame */}
@@ -154,13 +157,13 @@ export default function ServicesSection({ onSelectService, onBookService }) {
                     <span>{t('book_appointment', 'Book')}</span>
                   </button>
                 </div>
-              </div>
+              </ScrollReveal>
             );
           })}
         </div>
 
         {/* Reassurance Consultation Banner beneath Services */}
-        <div className="mt-10 sm:mt-14 bg-white dark:bg-[#0c1e33] rounded-2xl p-4 sm:p-6 border border-slate-200/80 dark:border-slate-700 shadow-xs flex flex-col md:flex-row items-center justify-between gap-4">
+        <ScrollReveal animation="zoom-in" delay={150} className="mt-10 sm:mt-14 bg-white dark:bg-[#0c1e33] rounded-2xl p-4 sm:p-6 border border-slate-200/80 dark:border-slate-700 shadow-xs flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3.5">
             <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-teal-50 dark:bg-teal-950/60 text-teal-600 dark:text-teal-400 flex items-center justify-center shrink-0">
               <ShieldCheck className="w-5 h-5 sm:w-6 sm:h-6" />
@@ -181,9 +184,10 @@ export default function ServicesSection({ onSelectService, onBookService }) {
           >
             {isHindi ? 'परामर्श बुक करें' : 'Book General Consultation'}
           </button>
-        </div>
+        </ScrollReveal>
 
       </div>
     </section>
   );
 }
+

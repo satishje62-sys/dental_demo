@@ -5,14 +5,32 @@ import { useLanguage } from '../contexts/LanguageContext';
 
 export default function FloatingActions({ onBookClick }) {
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
   const { t, isHindi } = useLanguage();
 
   useEffect(() => {
+    let ticking = false;
+
     const checkScroll = () => {
-      setShowScrollTop(window.scrollY > 400);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const scrollY = window.scrollY;
+          setShowScrollTop(scrollY > 350);
+
+          const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+          if (totalHeight > 0) {
+            const progress = (scrollY / totalHeight) * 100;
+            setScrollProgress(Math.min(100, Math.max(0, progress)));
+          }
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
 
     window.addEventListener('scroll', checkScroll, { passive: true });
+    checkScroll();
+
     return () => window.removeEventListener('scroll', checkScroll);
   }, []);
 
@@ -20,19 +38,54 @@ export default function FloatingActions({ onBookClick }) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  // Circular progress calculations (Radius = 18, circumference = 2 * PI * 18 ≈ 113.1)
+  const radius = 18;
+  const circumference = 2 * Math.PI * radius;
+  const strokeDashoffset = circumference - (scrollProgress / 100) * circumference;
+
   return (
     <>
-      {/* Desktop Floating Actions (WhatsApp + Scroll To Top) */}
+      {/* Desktop Floating Actions (WhatsApp + Scroll To Top with Circular Progress) */}
       <div className="hidden sm:flex fixed bottom-6 right-6 z-40 flex-col items-end gap-3 pointer-events-auto">
         {showScrollTop && (
-          <button
-            type="button"
-            onClick={scrollToTop}
-            className="w-10 h-10 rounded-full bg-white dark:bg-[#0c1e33] text-slate-700 dark:text-slate-200 hover:text-blue-700 dark:hover:text-sky-400 shadow-md border border-slate-200 dark:border-slate-700 flex items-center justify-center transition-all hover:-translate-y-0.5 cursor-pointer"
-            aria-label="Scroll to top"
-          >
-            <ArrowUp className="w-5 h-5" />
-          </button>
+          <div className="relative group">
+            {/* Scroll percentage tooltip */}
+            <div className="absolute right-full mr-2.5 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none px-2 py-1 bg-slate-900/90 text-white text-[11px] font-bold rounded-md whitespace-nowrap shadow-md">
+              {Math.round(scrollProgress)}% • {t('back_to_top', 'Top')}
+            </div>
+
+            <button
+              type="button"
+              onClick={scrollToTop}
+              className="relative w-11 h-11 rounded-full bg-white/95 dark:bg-[#0c1e33]/95 text-slate-700 dark:text-slate-200 hover:text-blue-700 dark:hover:text-sky-400 shadow-lg border border-slate-200/90 dark:border-slate-700/80 flex items-center justify-center transition-all hover:-translate-y-0.5 hover:shadow-blue-500/20 cursor-pointer backdrop-blur-md"
+              aria-label="Scroll to top"
+            >
+              {/* Circular SVG Progress Ring */}
+              <svg className="absolute inset-0 w-full h-full -rotate-90 pointer-events-none p-0.5">
+                <circle
+                  cx="22"
+                  cy="22"
+                  r={radius}
+                  className="stroke-slate-200 dark:stroke-slate-700"
+                  strokeWidth="2.5"
+                  fill="transparent"
+                />
+                <circle
+                  cx="22"
+                  cy="22"
+                  r={radius}
+                  className="stroke-blue-600 dark:stroke-sky-400 transition-all duration-150"
+                  strokeWidth="2.5"
+                  strokeDasharray={circumference}
+                  strokeDashoffset={strokeDashoffset}
+                  strokeLinecap="round"
+                  fill="transparent"
+                />
+              </svg>
+
+              <ArrowUp className="w-4 h-4 z-10 transition-transform group-hover:-translate-y-0.5" />
+            </button>
+          </div>
         )}
 
         <a
@@ -54,10 +107,24 @@ export default function FloatingActions({ onBookClick }) {
         <button
           type="button"
           onClick={scrollToTop}
-          className="sm:hidden fixed bottom-18 right-4 z-40 w-9 h-9 rounded-full bg-white/95 dark:bg-[#0c1e33]/95 text-slate-700 dark:text-slate-200 active:text-blue-700 shadow-md border border-slate-200 dark:border-slate-700 flex items-center justify-center active:scale-95 transition-transform"
+          className="sm:hidden fixed bottom-18 right-4 z-40 w-10 h-10 rounded-full bg-white/95 dark:bg-[#0c1e33]/95 text-slate-700 dark:text-slate-200 active:text-blue-700 shadow-lg border border-slate-200 dark:border-slate-700 flex items-center justify-center active:scale-95 transition-transform backdrop-blur-md"
           aria-label="Scroll to top"
         >
-          <ArrowUp className="w-4 h-4" />
+          {/* Mobile subtle circle */}
+          <svg className="absolute inset-0 w-full h-full -rotate-90 pointer-events-none p-0.5">
+            <circle
+              cx="20"
+              cy="20"
+              r="17"
+              className="stroke-blue-600 dark:stroke-sky-400 transition-all duration-150"
+              strokeWidth="2"
+              strokeDasharray={106.8}
+              strokeDashoffset={106.8 - (scrollProgress / 100) * 106.8}
+              strokeLinecap="round"
+              fill="transparent"
+            />
+          </svg>
+          <ArrowUp className="w-4 h-4 z-10" />
         </button>
       )}
 

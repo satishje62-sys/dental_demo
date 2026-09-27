@@ -2,6 +2,7 @@ import React from 'react';
 import { PhoneCall, MessageSquare, AlertCircle, Clock, ShieldAlert } from 'lucide-react';
 import { HOSPITAL_INFO } from '../data/dentalData';
 import { useLanguage } from '../contexts/LanguageContext';
+import ScrollReveal from './ScrollReveal';
 
 export default function EmergencyContact() {
   const { t } = useLanguage();
@@ -12,7 +13,7 @@ export default function EmergencyContact() {
       <div className="absolute top-1/2 -right-20 -translate-y-1/2 w-64 h-64 bg-rose-500/10 rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 relative z-10">
-        <div className="bg-white/5 border border-white/10 rounded-2xl sm:rounded-3xl p-5 sm:p-10 backdrop-blur-sm">
+        <ScrollReveal animation="zoom-in" className="bg-white/5 border border-white/10 rounded-2xl sm:rounded-3xl p-5 sm:p-10 backdrop-blur-sm">
           <div className="flex flex-col lg:flex-row items-center justify-between gap-6 sm:gap-8">
             
             {/* Left Content */}
@@ -45,7 +46,7 @@ export default function EmergencyContact() {
             <div className="flex flex-col sm:flex-row lg:flex-col gap-2.5 sm:gap-3.5 w-full sm:w-auto shrink-0">
               <a
                 href={`tel:${HOSPITAL_INFO.phoneRaw}`}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 py-3.5 px-6 rounded-xl font-bold text-xs sm:text-base text-slate-950 bg-white hover:bg-slate-100 active:bg-slate-200 shadow-md transition-all cursor-pointer"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 py-3.5 px-6 rounded-xl font-bold text-xs sm:text-base text-slate-950 bg-white hover:bg-slate-100 active:bg-slate-200 shadow-md transition-all cursor-pointer hover:scale-102"
               >
                 <PhoneCall className="w-4 h-4 sm:w-5 sm:h-5 text-rose-600" />
                 <span>{t('emergency_call_now', 'Call Helpline')}: {HOSPITAL_INFO.phone}</span>
@@ -55,7 +56,7 @@ export default function EmergencyContact() {
                 href={`https://wa.me/${HOSPITAL_INFO.whatsapp}?text=${encodeURIComponent(HOSPITAL_INFO.whatsappText)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 py-3.5 px-6 rounded-xl font-bold text-xs sm:text-base text-white bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 shadow-md transition-all cursor-pointer"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 py-3.5 px-6 rounded-xl font-bold text-xs sm:text-base text-white bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 shadow-md transition-all cursor-pointer hover:scale-102"
               >
                 <MessageSquare className="w-4 h-4 sm:w-5 sm:h-5" />
                 <span>{t('emergency_whatsapp_now', 'WhatsApp Us')}</span>
@@ -72,7 +73,7 @@ export default function EmergencyContact() {
             </p>
           </div>
 
-        </div>
+        </ScrollReveal>
       </div>
     </section>
   );

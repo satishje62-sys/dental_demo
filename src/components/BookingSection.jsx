@@ -15,6 +15,7 @@ import {
 import { SERVICES, DOCTORS, HOSPITAL_INFO } from '../data/dentalData';
 import { HINDI_DATA } from '../data/translations';
 import { useLanguage } from '../contexts/LanguageContext';
+import ScrollReveal from './ScrollReveal';
 
 export default function BookingSection({ preselectedService, preselectedDoctor }) {
   const { t, isHindi } = useLanguage();
@@ -137,7 +138,7 @@ export default function BookingSection({ preselectedService, preselectedDoctor }
       <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-14">
+        <ScrollReveal animation="fade-up" className="text-center max-w-3xl mx-auto mb-8 sm:mb-14">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-blue-100/80 dark:bg-blue-900/40 text-blue-900 dark:text-sky-300 text-xs font-semibold uppercase tracking-wider mb-2.5">
             {t('booking_badge', 'Online Patient Scheduling')}
           </div>
@@ -147,10 +148,10 @@ export default function BookingSection({ preselectedService, preselectedDoctor }
           <p className="text-sm sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
             {t('booking_subtitle', 'Choose a convenient date and time for your consultation. Our front desk team will contact you promptly to confirm your slot.')}
           </p>
-        </div>
+        </ScrollReveal>
 
         {/* Booking Card */}
-        <div className="max-w-3xl mx-auto bg-white dark:bg-[#0c1e33] rounded-2xl sm:rounded-3xl shadow-xl shadow-blue-950/5 border border-slate-200/90 dark:border-slate-700/80 overflow-hidden">
+        <ScrollReveal animation="zoom-in" delay={120} className="max-w-3xl mx-auto bg-white dark:bg-[#0c1e33] rounded-2xl sm:rounded-3xl shadow-xl shadow-blue-950/5 border border-slate-200/90 dark:border-slate-700/80 overflow-hidden">
           
           {/* Top Banner */}
           <div className="bg-[#0f2b48] dark:bg-[#081729] text-white px-4 sm:px-6 py-3.5 flex flex-wrap items-center justify-between gap-2 border-b border-blue-900/40 dark:border-slate-800">
@@ -493,7 +494,7 @@ export default function BookingSection({ preselectedService, preselectedDoctor }
             )}
           </div>
 
-        </div>
+        </ScrollReveal>
 
       </div>
     </section>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { UserCheck, Cpu, Sparkles, Heart, FileText, CheckCircle2, ArrowRight, Award } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
+import ScrollReveal from './ScrollReveal';
 
 export default function AboutHospital({ onOpenAboutModal }) {
   const { t, isHindi } = useLanguage();
@@ -43,7 +44,7 @@ export default function AboutHospital({ onOpenAboutModal }) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="max-w-3xl mb-8 sm:mb-14">
+        <ScrollReveal animation="fade-up" className="max-w-3xl mb-8 sm:mb-14">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-blue-50 dark:bg-blue-900/40 text-blue-700 dark:text-sky-300 text-xs font-semibold uppercase tracking-wider mb-2.5">
             {t('about_badge', 'About Our Hospital')}
           </div>
@@ -53,19 +54,19 @@ export default function AboutHospital({ onOpenAboutModal }) {
           <p className="text-sm sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed">
             {t('about_desc_1', 'SmileCare Dental Hospital provides comprehensive dental care using modern technology, experienced dental professionals and a patient-first approach. We believe dental treatment should be comfortable, transparent, and completely anxiety-free.')}
           </p>
-        </div>
+        </ScrollReveal>
 
         {/* 2-Column Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           
           {/* Clinic Photo Frame */}
-          <div className="lg:col-span-5 relative">
+          <ScrollReveal animation="fade-right" delay={150} className="lg:col-span-5 relative">
             <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg border border-slate-100 dark:border-slate-800 group">
               <div className="aspect-4/3 sm:aspect-4/3 bg-slate-100 dark:bg-slate-800">
                 <img
                   src="/images/clinic-interior.jpg"
                   alt="SmileCare Dental Hospital reception lounge and consultation suites"
-                  className="w-full h-full object-cover object-center"
+                  className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
                   loading="lazy"
                 />
               </div>
@@ -94,7 +95,7 @@ export default function AboutHospital({ onOpenAboutModal }) {
                 <div className="text-[11px] text-slate-500 dark:text-slate-400">{isHindi ? 'NABH सुरक्षा मानकों के अनुरूप' : 'Exceeds NABH hospital safety guidelines'}</div>
               </div>
             </div>
-          </div>
+          </ScrollReveal>
 
           {/* 6 Value Highlights */}
           <div className="lg:col-span-7">
@@ -102,9 +103,11 @@ export default function AboutHospital({ onOpenAboutModal }) {
               {highlights.map((item, index) => {
                 const Icon = item.icon;
                 return (
-                  <div
+                  <ScrollReveal
                     key={index}
-                    className="p-4 rounded-xl sm:rounded-2xl bg-slate-50/70 dark:bg-[#0c1e33] border border-slate-100/90 dark:border-slate-800 hover:bg-white dark:hover:bg-[#132a45] hover:border-blue-200 transition-colors flex items-start gap-3.5"
+                    animation="fade-up"
+                    delay={100 + index * 70}
+                    className="p-4 rounded-xl sm:rounded-2xl bg-slate-50/70 dark:bg-[#0c1e33] border border-slate-100/90 dark:border-slate-800 hover:bg-white dark:hover:bg-[#132a45] hover:border-blue-200 transition-all duration-300 flex items-start gap-3.5 hover:-translate-y-1 hover:shadow-md"
                   >
                     <div className="w-9 h-9 rounded-lg sm:rounded-xl bg-white dark:bg-[#081729] text-blue-700 dark:text-sky-400 flex items-center justify-center shadow-xs border border-slate-100 dark:border-slate-700 shrink-0 mt-0.5">
                       <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-blue-700 dark:text-sky-400" />
@@ -117,13 +120,13 @@ export default function AboutHospital({ onOpenAboutModal }) {
                         {item.desc}
                       </p>
                     </div>
-                  </div>
+                  </ScrollReveal>
                 );
               })}
             </div>
 
             {/* CTA */}
-            <div className="pt-1">
+            <ScrollReveal animation="fade-up" delay={500} className="pt-1">
               <button
                 type="button"
                 onClick={onOpenAboutModal}
@@ -132,7 +135,7 @@ export default function AboutHospital({ onOpenAboutModal }) {
                 <span>{t('about_btn_more', 'Learn More About Our Hospital')}</span>
                 <ArrowRight className="w-4 h-4 text-blue-600 dark:text-sky-400" />
               </button>
-            </div>
+            </ScrollReveal>
           </div>
 
         </div>

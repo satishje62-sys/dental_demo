@@ -3,6 +3,7 @@ import { Info } from 'lucide-react';
 import { BEFORE_AFTER_ITEMS } from '../data/dentalData';
 import { HINDI_DATA } from '../data/translations';
 import { useLanguage } from '../contexts/LanguageContext';
+import ScrollReveal from './ScrollReveal';
 
 export default function BeforeAfterSection({ onBookClick }) {
   const [activeTab, setActiveTab] = useState(0);
@@ -15,7 +16,7 @@ export default function BeforeAfterSection({ onBookClick }) {
       <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-12">
+        <ScrollReveal animation="fade-up" className="text-center max-w-3xl mx-auto mb-8 sm:mb-12">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-teal-50 dark:bg-teal-950/60 text-teal-800 dark:text-teal-300 text-xs font-semibold uppercase tracking-wider mb-2.5">
             {t('ba_badge', 'Clinical Results')}
           </div>
@@ -25,10 +26,10 @@ export default function BeforeAfterSection({ onBookClick }) {
           <p className="text-sm sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
             {t('ba_subtitle', 'Real aesthetic transformations completed at SmileCare Dental Hospital using gentle, minimally invasive dental techniques.')}
           </p>
-        </div>
+        </ScrollReveal>
 
         {/* Category Tabs */}
-        <div className="flex items-center justify-start sm:justify-center gap-2 mb-6 sm:mb-10 overflow-x-auto no-scrollbar pb-1 px-1">
+        <ScrollReveal animation="fade-up" delay={100} className="flex items-center justify-start sm:justify-center gap-2 mb-6 sm:mb-10 overflow-x-auto no-scrollbar pb-1 px-1">
           {items.map((item, idx) => (
             <button
               key={item.id}
@@ -43,10 +44,10 @@ export default function BeforeAfterSection({ onBookClick }) {
               {item.category}
             </button>
           ))}
-        </div>
+        </ScrollReveal>
 
         {/* Main Transformation Card */}
-        <div className="max-w-4xl mx-auto bg-white dark:bg-[#0c1e33] rounded-2xl sm:rounded-3xl p-3.5 sm:p-8 border border-slate-200/80 dark:border-slate-700/80 shadow-md">
+        <ScrollReveal animation="zoom-in" delay={150} className="max-w-4xl mx-auto bg-white dark:bg-[#0c1e33] rounded-2xl sm:rounded-3xl p-3.5 sm:p-8 border border-slate-200/80 dark:border-slate-700/80 shadow-md">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-8 items-center">
             
             {/* Visual Frame */}
@@ -99,7 +100,7 @@ export default function BeforeAfterSection({ onBookClick }) {
             </p>
           </div>
 
-        </div>
+        </ScrollReveal>
 
       </div>
     </section>

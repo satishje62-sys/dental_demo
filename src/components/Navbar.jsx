@@ -28,6 +28,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 
 export default function Navbar({ onBookClick }) {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
   const { isDark, toggleTheme } = useTheme();
@@ -35,7 +36,13 @@ export default function Navbar({ onBookClick }) {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      const scrollY = window.scrollY;
+      setIsScrolled(scrollY > 20);
+
+      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (totalHeight > 0) {
+        setScrollProgress(Math.min(100, Math.max(0, (scrollY / totalHeight) * 100)));
+      }
 
       // Section tracking
       const sections = ['home', 'about', 'services', 'facilities', 'doctors', 'reviews', 'faq', 'contact'];
@@ -43,7 +50,7 @@ export default function Navbar({ onBookClick }) {
         const el = document.getElementById(section);
         if (el) {
           const rect = el.getBoundingClientRect();
-          if (rect.top <= 120 && rect.bottom >= 120) {
+          if (rect.top <= 160 && rect.bottom >= 120) {
             setActiveSection(section);
             break;
           }
@@ -52,6 +59,7 @@ export default function Navbar({ onBookClick }) {
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -256,6 +264,14 @@ export default function Navbar({ onBookClick }) {
             </div>
 
           </div>
+        </div>
+
+        {/* Live Scroll Progress Bar */}
+        <div className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-slate-100/50 dark:bg-slate-800/40 pointer-events-none">
+          <div
+            className="h-full bg-gradient-to-r from-teal-400 via-sky-500 to-blue-600 transition-all duration-75 ease-out shadow-[0_0_10px_rgba(56,189,248,0.8)]"
+            style={{ width: `${scrollProgress}%` }}
+          />
         </div>
       </header>
 

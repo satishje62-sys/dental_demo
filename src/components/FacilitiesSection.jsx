@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { FACILITIES } from '../data/dentalData';
 import { useLanguage } from '../contexts/LanguageContext';
+import ScrollReveal from './ScrollReveal';
 
 const facilityIconMap = {
   LayoutGrid,
@@ -166,7 +167,7 @@ export default function FacilitiesSection() {
       <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-14">
+        <ScrollReveal animation="fade-up" className="text-center max-w-3xl mx-auto mb-8 sm:mb-14">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-teal-50 dark:bg-teal-950/60 text-teal-800 dark:text-teal-300 text-xs font-semibold uppercase tracking-wider mb-2.5">
             {t('facilities_badge', 'Hospital Infrastructure')}
           </div>
@@ -176,10 +177,10 @@ export default function FacilitiesSection() {
           <p className="text-sm sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
             {t('facilities_subtitle', 'Designed for sterile safety, unmatched clinical precision, and maximum patient relaxation.')}
           </p>
-        </div>
+        </ScrollReveal>
 
         {/* Featured Visual Showcase Carousel / Tabs */}
-        <div className="mb-10 sm:mb-16 bg-slate-900 dark:bg-[#0c1e33] rounded-2xl sm:rounded-3xl p-3.5 sm:p-6 lg:p-8 text-white shadow-xl overflow-hidden relative border border-slate-800">
+        <ScrollReveal animation="zoom-in" delay={100} className="mb-10 sm:mb-16 bg-slate-900 dark:bg-[#0c1e33] rounded-2xl sm:rounded-3xl p-3.5 sm:p-6 lg:p-8 text-white shadow-xl overflow-hidden relative border border-slate-800">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-center">
             
             {/* Visual Preview */}
@@ -248,18 +249,20 @@ export default function FacilitiesSection() {
             </div>
 
           </div>
-        </div>
+        </ScrollReveal>
 
         {/* 12 Hospital Facilities Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3.5 sm:gap-5">
-          {FACILITIES.map((rawFacility) => {
+          {FACILITIES.map((rawFacility, idx) => {
             const facility = getLocalizedFacility(rawFacility);
             const Icon = facilityIconMap[facility.icon] || LayoutGrid;
 
             return (
-              <div
+              <ScrollReveal
                 key={facility.id}
-                className="bg-slate-50/70 dark:bg-[#0c1e33] hover:bg-white dark:hover:bg-[#0e243d] rounded-2xl p-4 sm:p-5 border border-slate-200/80 dark:border-slate-700/80 hover:border-teal-300 dark:hover:border-teal-400 hover:shadow-md transition-all flex flex-col justify-between"
+                animation="fade-up"
+                delay={(idx % 4) * 60}
+                className="bg-slate-50/70 dark:bg-[#0c1e33] hover:bg-white dark:hover:bg-[#0e243d] rounded-2xl p-4 sm:p-5 border border-slate-200/80 dark:border-slate-700/80 hover:border-teal-300 dark:hover:border-teal-400 hover:shadow-md transition-all flex flex-col justify-between hover:-translate-y-1"
               >
                 <div>
                   <div className="flex items-center justify-between mb-3">
@@ -289,7 +292,7 @@ export default function FacilitiesSection() {
                     ))}
                   </div>
                 )}
-              </div>
+              </ScrollReveal>
             );
           })}
         </div>

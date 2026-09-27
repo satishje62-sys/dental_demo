@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { HOSPITAL_INFO } from '../data/dentalData';
 import { useLanguage } from '../contexts/LanguageContext';
+import ScrollReveal from './ScrollReveal';
 
 export default function LocationSection() {
   const { t, isHindi } = useLanguage();
@@ -20,7 +21,7 @@ export default function LocationSection() {
       <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-14">
+        <ScrollReveal animation="fade-up" className="text-center max-w-3xl mx-auto mb-8 sm:mb-14">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-blue-100/80 dark:bg-blue-900/40 text-blue-900 dark:text-sky-300 text-xs font-semibold uppercase tracking-wider mb-2.5">
             {t('location_badge', 'Hospital Location & Hours')}
           </div>
@@ -30,13 +31,13 @@ export default function LocationSection() {
           <p className="text-sm sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
             {t('location_subtitle', 'Conveniently located in central Patna with dedicated parking and wheelchair accessibility. We welcome walk-in consultations and scheduled appointments.')}
           </p>
-        </div>
+        </ScrollReveal>
 
         {/* 2-Column Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-8 items-stretch">
           
           {/* Left Column: Hospital Contact Details */}
-          <div className="lg:col-span-5 flex flex-col justify-between space-y-3.5 sm:space-y-4">
+          <ScrollReveal animation="fade-right" delay={100} className="lg:col-span-5 flex flex-col justify-between space-y-3.5 sm:space-y-4">
             
             {/* Address Card */}
             <div className="bg-white dark:bg-[#0c1e33] rounded-2xl sm:rounded-3xl p-4 sm:p-7 border border-slate-200/80 dark:border-slate-700/80 shadow-xs">
@@ -139,10 +140,10 @@ export default function LocationSection() {
               </span>
             </div>
 
-          </div>
+          </ScrollReveal>
 
           {/* Right Column: Map Embed */}
-          <div className="lg:col-span-7 bg-white dark:bg-[#0c1e33] rounded-2xl sm:rounded-3xl p-2.5 sm:p-3 border border-slate-200/80 dark:border-slate-700/80 shadow-sm flex flex-col">
+          <ScrollReveal animation="fade-left" delay={150} className="lg:col-span-7 bg-white dark:bg-[#0c1e33] rounded-2xl sm:rounded-3xl p-2.5 sm:p-3 border border-slate-200/80 dark:border-slate-700/80 shadow-sm flex flex-col">
             <div className="relative w-full h-[260px] sm:h-[420px] rounded-xl sm:rounded-2xl overflow-hidden bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
               <iframe
                 title="SmileCare Dental Hospital Location"
@@ -173,7 +174,7 @@ export default function LocationSection() {
                 </a>
               </div>
             </div>
-          </div>
+          </ScrollReveal>
 
         </div>
 

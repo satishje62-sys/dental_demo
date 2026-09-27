@@ -3,6 +3,7 @@ import { Award, Calendar, Star, Clock } from 'lucide-react';
 import { DOCTORS } from '../data/dentalData';
 import { HINDI_DATA } from '../data/translations';
 import { useLanguage } from '../contexts/LanguageContext';
+import ScrollReveal from './ScrollReveal';
 
 export default function DoctorsSection({ onSelectDoctor, onBookDoctor }) {
   const { t, isHindi } = useLanguage();
@@ -13,7 +14,7 @@ export default function DoctorsSection({ onSelectDoctor, onBookDoctor }) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-14">
+        <ScrollReveal animation="fade-up" className="text-center max-w-3xl mx-auto mb-14">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-blue-50 dark:bg-blue-900/40 text-blue-700 dark:text-sky-300 text-xs font-semibold uppercase tracking-wider mb-3">
             {t('doctors_badge', 'Our Medical Specialists')}
           </div>
@@ -23,14 +24,16 @@ export default function DoctorsSection({ onSelectDoctor, onBookDoctor }) {
           <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
             {t('doctors_subtitle', 'MDS qualified surgeons, implantologists, and orthodontists with over 10+ years of dedicated clinical experience.')}
           </p>
-        </div>
+        </ScrollReveal>
 
-        {/* 3 Doctor Cards Grid */}
+        {/* 3 Doctor Cards Grid with Staggered ScrollReveal */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {doctorsList.map((doc) => (
-            <div
+          {doctorsList.map((doc, idx) => (
+            <ScrollReveal
               key={doc.id}
-              className="bg-white dark:bg-[#0c1e33] rounded-3xl overflow-hidden border border-slate-200/80 dark:border-slate-700/80 hover:border-blue-300 dark:hover:border-sky-500 shadow-sm hover:shadow-xl hover:shadow-blue-950/20 transition-all duration-300 flex flex-col justify-between group transform hover:-translate-y-1"
+              animation="fade-up"
+              delay={idx * 100}
+              className="bg-white dark:bg-[#0c1e33] rounded-3xl overflow-hidden border border-slate-200/80 dark:border-slate-700/80 hover:border-blue-300 dark:hover:border-sky-500 shadow-sm hover:shadow-xl hover:shadow-blue-950/20 transition-all duration-300 flex flex-col justify-between group transform hover:-translate-y-1.5"
             >
               {/* Doctor Photo Frame */}
               <div className="relative aspect-square overflow-hidden bg-slate-100 dark:bg-slate-800">
@@ -97,7 +100,7 @@ export default function DoctorsSection({ onSelectDoctor, onBookDoctor }) {
                   </button>
                 </div>
               </div>
-            </div>
+            </ScrollReveal>
           ))}
         </div>
 

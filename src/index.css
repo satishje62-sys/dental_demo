@@ -233,3 +233,49 @@ body {
 .goog-te-gadget .goog-te-combo {
   display: none !important;
 }
+
+/* ==========================================================================
+   Smooth Scroll Accents & Micro-Animations
+   ========================================================================== */
+
+@keyframes floatGentle {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+}
+
+@keyframes floatGentleReverse {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(7px);
+  }
+}
+
+@keyframes pulseSoft {
+  0%, 100% {
+    opacity: 0.35;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.65;
+    transform: scale(1.04);
+  }
+}
+
+.animate-float-gentle {
+  animation: floatGentle 5s ease-in-out infinite;
+}
+
+.animate-float-reverse {
+  animation: floatGentleReverse 6s ease-in-out infinite;
+}
+
+.animate-pulse-soft {
+  animation: pulseSoft 7s ease-in-out infinite;
+}
+
