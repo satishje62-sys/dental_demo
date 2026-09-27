@@ -13,31 +13,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   </head>
-  <body class="font-sans antialiased text-slate-800 bg-[#fbfcfd] selection:bg-blue-600 selection:text-white">
+  <body class="font-sans antialiased text-slate-800 bg-[#fbfcfd] dark:bg-[#071322] dark:text-slate-100 selection:bg-blue-600 selection:text-white">
     <div id="root"></div>
-    
-    <!-- Google Translate Script (Fail-Safe) -->
-    <script type="text/javascript">
-      window.googleTranslateElementInit = function() {
-        try {
-          if (window.google && window.google.translate && window.google.translate.TranslateElement) {
-            var targetEl = document.getElementById('google_translate_element');
-            if (targetEl) {
-              new window.google.translate.TranslateElement({
-                pageLanguage: 'en',
-                includedLanguages: 'en,hi',
-                layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE,
-                autoDisplay: false,
-              }, 'google_translate_element');
-            }
-          }
-        } catch (e) {
-          console.warn('Google Translate error:', e);
-        }
-      };
-    </script>
-    <script type="text/javascript" async src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

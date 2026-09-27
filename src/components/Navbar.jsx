@@ -31,7 +31,7 @@ export default function Navbar({ onBookClick }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
   const { isDark, toggleTheme } = useTheme();
-  const { currentLang, changeLanguage } = useLanguage();
+  const { currentLang, changeLanguage, t, isHindi } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -70,16 +70,6 @@ export default function Navbar({ onBookClick }) {
     };
   }, [mobileMenuOpen]);
 
-  // Safely initialize Google Translate once navbar is rendered
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (typeof window.googleTranslateElementInit === 'function') {
-        window.googleTranslateElementInit();
-      }
-    }, 500);
-    return () => clearTimeout(timer);
-  }, []);
-
   const navLinks = [
     { name: 'Home', href: '#home', id: 'home', icon: Home },
     { name: 'About', href: '#about', id: 'about', icon: Info },
@@ -104,9 +94,6 @@ export default function Navbar({ onBookClick }) {
 
   return (
     <>
-      {/* Hidden container for Google Translate Engine */}
-      <div id="google_translate_element" className="sr-only" aria-hidden="true"></div>
-
       {/* Top Notification Bar */}
       <div className="bg-[#0b1f36] dark:bg-[#07101d] text-white text-[11px] sm:text-xs py-1.5 sm:py-2 px-3 sm:px-4 border-b border-blue-950/40 dark:border-slate-800/60">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-2">
@@ -129,25 +116,25 @@ export default function Navbar({ onBookClick }) {
           <div className="hidden sm:flex items-center gap-4 flex-wrap">
             <span className="inline-flex items-center gap-1.5 text-slate-300">
               <Clock className="w-3.5 h-3.5 text-sky-400" />
-              <span>Mon – Sat: 9:00 AM – 8:00 PM | Sun: 10:00 AM – 2:00 PM</span>
+              <span>{t('top_timing', 'Mon – Sat: 9:00 AM – 8:00 PM | Sun: 10:00 AM – 2:00 PM')}</span>
             </span>
             <span className="hidden md:inline-flex items-center gap-1.5 text-slate-300">
               <MapPin className="w-3.5 h-3.5 text-teal-400" />
-              <span>Patna, Bihar</span>
+              <span>{t('top_city', 'Patna, Bihar')}</span>
             </span>
           </div>
 
           <div className="hidden sm:flex items-center gap-4">
             <span className="hidden lg:inline-flex items-center gap-1 text-emerald-300 font-medium">
               <Shield className="w-3.5 h-3.5" />
-              <span>NABH & Class-B Sterilization</span>
+              <span>{t('top_cert', 'NABH & Class-B Sterilization')}</span>
             </span>
             <a 
               href={`tel:${HOSPITAL_INFO.phoneRaw}`} 
               className="inline-flex items-center gap-1.5 text-sky-300 hover:text-white font-medium transition-colors"
             >
               <Phone className="w-3.5 h-3.5 text-sky-400" />
-              <span>Helpline: {HOSPITAL_INFO.phone}</span>
+              <span>{t('call_helpline', 'Helpline')}: {HOSPITAL_INFO.phone}</span>
             </a>
           </div>
         </div>
@@ -204,53 +191,14 @@ export default function Navbar({ onBookClick }) {
                       : 'text-slate-600 dark:text-slate-300 hover:text-[#0b1f36] dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/60'
                   }`}
                 >
-                  {link.name}
+                  {t(`nav_${link.id}`, link.name)}
                 </a>
               ))}
             </nav>
 
-            {/* Desktop Action Buttons & Toggles */}
+            {/* Desktop Action Buttons (Clean & Professional - Toggle & Language moved to Sidebar only) */}
             <div className="hidden sm:flex items-center gap-2.5 lg:gap-3">
               
-              {/* Premium Language Switcher Segmented Control */}
-              <div className="flex items-center p-1 bg-slate-100 dark:bg-slate-800 rounded-xl border border-slate-200/80 dark:border-slate-700/80 text-xs font-bold">
-                <button
-                  type="button"
-                  onClick={() => changeLanguage('en')}
-                  className={`px-2.5 py-1.5 rounded-lg transition-all flex items-center gap-1 cursor-pointer ${
-                    currentLang === 'en'
-                      ? 'bg-white dark:bg-[#0c1e33] text-blue-800 dark:text-sky-300 shadow-xs'
-                      : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white'
-                  }`}
-                >
-                  <span>🇬🇧</span>
-                  <span>EN</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => changeLanguage('hi')}
-                  className={`px-2.5 py-1.5 rounded-lg transition-all flex items-center gap-1 cursor-pointer ${
-                    currentLang === 'hi'
-                      ? 'bg-white dark:bg-[#0c1e33] text-blue-800 dark:text-sky-300 shadow-xs font-bold'
-                      : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white'
-                  }`}
-                >
-                  <span>🇮🇳</span>
-                  <span>हिन्दी</span>
-                </button>
-              </div>
-
-              {/* Theme Toggle Button */}
-              <button
-                type="button"
-                onClick={toggleTheme}
-                title={isDark ? "Switch to Day Mode" : "Switch to Night Mode"}
-                className="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-amber-300 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200/60 dark:border-slate-700/60 transition-colors cursor-pointer"
-                aria-label="Toggle dark/light theme"
-              >
-                {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4 text-slate-700" />}
-              </button>
-
               {/* Phone call pill */}
               <a
                 href={`tel:${HOSPITAL_INFO.phoneRaw}`}
@@ -269,43 +217,31 @@ export default function Navbar({ onBookClick }) {
                 className="inline-flex items-center gap-2 px-4.5 py-2.5 rounded-xl font-semibold text-sm text-white bg-gradient-to-r from-[#0f2b48] to-[#1e4e85] dark:from-sky-600 dark:to-blue-800 hover:from-[#0b1f36] hover:to-[#153860] shadow-md shadow-blue-900/15 transition-all transform hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
               >
                 <Calendar className="w-4 h-4 text-sky-300 dark:text-sky-200" />
-                <span>Book Appointment</span>
+                <span>{t('book_appointment', 'Book Appointment')}</span>
+              </button>
+
+              {/* Desktop Sidebar Toggle Button */}
+              <button
+                type="button"
+                onClick={() => setMobileMenuOpen(true)}
+                className="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200/80 dark:border-slate-700 transition-colors cursor-pointer"
+                title="Open Settings & Menu (Language, Theme & Navigation)"
+                aria-label="Open settings menu"
+              >
+                <Menu className="w-5 h-5" />
               </button>
             </div>
 
-            {/* Mobile Actions: Language pill + Theme toggle + Book pill + 3-line Hamburger Button */}
-            <div className="flex items-center gap-1.5 sm:hidden">
-              
-              {/* Mobile Quick Language Toggle */}
-              <button
-                type="button"
-                onClick={() => changeLanguage(currentLang === 'en' ? 'hi' : 'en')}
-                className="px-2 py-1.5 rounded-lg text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-sky-300 border border-slate-200/80 dark:border-slate-700 flex items-center gap-1 cursor-pointer active:scale-95 transition-transform"
-                aria-label="Change Language"
-                title="Change language / भाषा बदलें"
-              >
-                <Globe className="w-3.5 h-3.5 text-sky-600 dark:text-sky-400" />
-                <span>{currentLang === 'en' ? 'हिन्दी' : 'ENG'}</span>
-              </button>
-
-              {/* Mobile Theme Toggle */}
-              <button
-                type="button"
-                onClick={toggleTheme}
-                className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-amber-300 border border-slate-200/60 dark:border-slate-700 active:scale-95 transition-transform cursor-pointer"
-                aria-label="Toggle theme"
-              >
-                {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4 text-slate-700" />}
-              </button>
-
+            {/* Mobile Actions: Book pill + 3-line Hamburger Button (Toggle & Language inside Sidebar only) */}
+            <div className="flex items-center gap-2 sm:hidden">
               {/* Mobile Book Button */}
               <button
                 type="button"
                 onClick={onBookClick}
-                className="px-2.5 py-1.5 text-xs font-bold text-white bg-[#0f2b48] dark:bg-sky-700 active:bg-[#0b1f36] rounded-lg shadow-xs flex items-center gap-1 cursor-pointer"
+                className="px-3 py-1.5 text-xs font-bold text-white bg-[#0f2b48] dark:bg-sky-700 active:bg-[#0b1f36] rounded-lg shadow-xs flex items-center gap-1 cursor-pointer"
               >
                 <Calendar className="w-3.5 h-3.5 text-sky-300" />
-                <span>Book</span>
+                <span>{t('book_appointment', 'Book')}</span>
               </button>
 
               {/* Mobile Hamburger Menu Button */}
@@ -329,7 +265,7 @@ export default function Navbar({ onBookClick }) {
         Works smoothly regardless of scroll position!
       */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-[100] lg:hidden flex justify-end">
+        <div className="fixed inset-0 z-[100] flex justify-end">
           
           {/* Semi-transparent Backdrop: Clicking closes the sidebar */}
           <div 
@@ -423,10 +359,10 @@ export default function Navbar({ onBookClick }) {
                   </div>
                   <div>
                     <span className="text-xs font-bold text-slate-800 dark:text-white block">
-                      {isDark ? 'Night Mode Active' : 'Day Mode Active'}
+                      {isDark ? t('night_mode_active', 'Night Mode Active') : t('day_mode_active', 'Day Mode Active')}
                     </span>
                     <span className="text-[10px] text-slate-500 dark:text-slate-400">
-                      {isDark ? 'Dark theme enabled' : 'Light theme enabled'}
+                      {isDark ? t('dark_theme_enabled', 'Dark theme enabled') : t('light_theme_enabled', 'Light theme enabled')}
                     </span>
                   </div>
                 </div>
@@ -436,14 +372,14 @@ export default function Navbar({ onBookClick }) {
                   onClick={toggleTheme}
                   className="px-3 py-1.5 rounded-xl text-xs font-bold bg-white dark:bg-[#081729] text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 active:scale-95 transition-all cursor-pointer shadow-xs"
                 >
-                  {isDark ? '☀️ Switch Day' : '🌙 Switch Night'}
+                  {isDark ? t('switch_day', '☀️ Switch Day') : t('switch_night', '🌙 Switch Night')}
                 </button>
               </div>
 
               <div className="px-2 pt-2 text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center justify-between">
-                <span>Hospital Navigation</span>
+                <span>{t('menu_options', 'Hospital Navigation')}</span>
                 <span className="text-teal-600 dark:text-teal-400 font-semibold lowercase bg-teal-50 dark:bg-teal-950/50 px-2 py-0.5 rounded-full">
-                  open today
+                  {t('open_today', 'open today')}
                 </span>
               </div>
 
@@ -470,7 +406,7 @@ export default function Navbar({ onBookClick }) {
                         }`}>
                           <Icon className="w-4 h-4" />
                         </div>
-                        <span>{link.name}</span>
+                        <span>{t(`nav_${link.id}`, link.name)}</span>
                       </div>
                       <ChevronRight className={`w-4 h-4 ${isActive ? 'text-blue-600 dark:text-sky-400' : 'text-slate-400 dark:text-slate-500'}`} />
                     </a>
@@ -489,7 +425,7 @@ export default function Navbar({ onBookClick }) {
                   className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-[#0f2b48] to-[#1e4e85] dark:from-sky-600 dark:to-blue-800 active:from-[#0b1f36] shadow-md shadow-blue-900/15 cursor-pointer"
                 >
                   <Calendar className="w-4 h-4 text-sky-300" />
-                  <span>Book Appointment</span>
+                  <span>{t('book_appointment', 'Book Appointment')}</span>
                 </button>
 
                 <div className="grid grid-cols-2 gap-2">
@@ -498,7 +434,7 @@ export default function Navbar({ onBookClick }) {
                     className="flex items-center justify-center gap-1.5 py-2.5 rounded-xl font-semibold text-xs text-slate-800 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700 active:bg-slate-200"
                   >
                     <Phone className="w-3.5 h-3.5 text-blue-700 dark:text-sky-400" />
-                    <span>Call Helpline</span>
+                    <span>{t('call_helpline', 'Call Helpline')}</span>
                   </a>
 
                   <a
@@ -508,7 +444,7 @@ export default function Navbar({ onBookClick }) {
                     className="flex items-center justify-center gap-1.5 py-2.5 rounded-xl font-semibold text-xs text-emerald-800 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/40 active:bg-emerald-100 border border-emerald-200 dark:border-emerald-800"
                   >
                     <MessageSquare className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
-                    <span>WhatsApp</span>
+                    <span>{t('chat_whatsapp', 'WhatsApp')}</span>
                   </a>
                 </div>
               </div>

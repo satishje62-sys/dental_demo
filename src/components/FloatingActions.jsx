@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { MessageSquare, Phone, Calendar, ArrowUp } from 'lucide-react';
 import { HOSPITAL_INFO } from '../data/dentalData';
+import { useLanguage } from '../contexts/LanguageContext';
 
 export default function FloatingActions({ onBookClick }) {
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const { t, isHindi } = useLanguage();
 
   useEffect(() => {
     const checkScroll = () => {
@@ -42,7 +44,7 @@ export default function FloatingActions({ onBookClick }) {
         >
           <MessageSquare className="w-5 h-5 fill-white text-emerald-600" />
           <span className="text-xs font-bold tracking-wide">
-            Chat on WhatsApp
+            {t('chat_whatsapp', 'Chat on WhatsApp')}
           </span>
         </a>
       </div>
@@ -66,7 +68,7 @@ export default function FloatingActions({ onBookClick }) {
           className="flex-1 inline-flex items-center justify-center gap-1.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-xs font-bold text-slate-800 dark:text-slate-200 bg-slate-50 dark:bg-[#0c1e33] active:bg-slate-100"
         >
           <Phone className="w-3.5 h-3.5 text-blue-700 dark:text-sky-400" />
-          <span>Call</span>
+          <span>{isHindi ? "कॉल" : "Call"}</span>
         </a>
 
         <a
@@ -85,7 +87,7 @@ export default function FloatingActions({ onBookClick }) {
           className="flex-2 inline-flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-[#0f2b48] to-[#1e4e85] dark:from-sky-600 dark:to-blue-800 active:from-[#0b1f36] shadow-md shadow-blue-900/15"
         >
           <Calendar className="w-3.5 h-3.5 text-sky-300" />
-          <span>Book Appointment</span>
+          <span>{isHindi ? "अपॉइंटमेंट बुक करें" : "Book Appointment"}</span>
         </button>
       </div>
     </>

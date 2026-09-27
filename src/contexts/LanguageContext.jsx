@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { TRANSLATIONS } from '../data/translations';
 
 const LanguageContext = createContext();
 
@@ -17,42 +18,40 @@ export const LanguageProvider = ({ children }) => {
     setCurrentLang(langCode);
     localStorage.setItem('site_language', langCode);
 
-    // Set Google Translate cookie
-    const hostname = window.location.hostname;
-    document.cookie = `googtrans=/en/${langCode}; path=/;`;
-    if (hostname) {
-      document.cookie = `googtrans=/en/${langCode}; domain=${hostname}; path=/;`;
-    }
-
-    // Trigger google translate select element if available
-    const selectEl = document.querySelector('.goog-te-combo');
-    if (selectEl) {
-      selectEl.value = langCode;
-      selectEl.dispatchEvent(new Event('change'));
+    if (langCode === 'hi') {
+      document.documentElement.lang = 'hi';
+      document.documentElement.classList.add('lang-hi');
+    } else {
+      document.documentElement.lang = 'en';
+      document.documentElement.classList.remove('lang-hi');
     }
   };
 
-  // Sync on mount or when Google translate widget becomes ready
   useEffect(() => {
-    const checkAndSync = () => {
-      const selectEl = document.querySelector('.goog-te-combo');
-      if (selectEl && currentLang && selectEl.value !== currentLang) {
-        selectEl.value = currentLang;
-        selectEl.dispatchEvent(new Event('change'));
-      }
-    };
-
-    const interval = setInterval(checkAndSync, 800);
-    const timeout = setTimeout(() => clearInterval(interval), 10000);
-
-    return () => {
-      clearInterval(interval);
-      clearTimeout(timeout);
-    };
+    if (currentLang === 'hi') {
+      document.documentElement.lang = 'hi';
+      document.documentElement.classList.add('lang-hi');
+    } else {
+      document.documentElement.lang = 'en';
+      document.documentElement.classList.remove('lang-hi');
+    }
   }, [currentLang]);
 
+  // Translation helper function
+  const t = (key, fallback = '') => {
+    if (TRANSLATIONS[currentLang] && TRANSLATIONS[currentLang][key]) {
+      return TRANSLATIONS[currentLang][key];
+    }
+    if (TRANSLATIONS['en'] && TRANSLATIONS['en'][key]) {
+      return TRANSLATIONS['en'][key];
+    }
+    return fallback || key;
+  };
+
+  const isHindi = currentLang === 'hi';
+
   return (
-    <LanguageContext.Provider value={{ currentLang, changeLanguage }}>
+    <LanguageContext.Provider value={{ currentLang, changeLanguage, t, isHindi }}>
       {children}
     </LanguageContext.Provider>
   );

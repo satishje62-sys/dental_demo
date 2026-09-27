@@ -10,26 +10,36 @@ import {
   Calendar
 } from 'lucide-react';
 import { HOSPITAL_INFO } from '../data/dentalData';
+import { useLanguage } from '../contexts/LanguageContext';
 
 export default function Footer({ onBookClick, onOpenPrivacy, onOpenTerms, onSelectServiceByName }) {
+  const { t, isHindi } = useLanguage();
+
   const quickLinks = [
-    { name: 'Home', href: '#home' },
-    { name: 'About', href: '#about' },
-    { name: 'Services', href: '#services' },
-    { name: 'Facilities', href: '#facilities' },
-    { name: 'Doctors', href: '#doctors' },
-    { name: 'Reviews', href: '#reviews' },
-    { name: 'FAQ', href: '#faq' },
-    { name: 'Contact', href: '#contact' },
+    { name: t('nav_home', 'Home'), href: '#home' },
+    { name: t('nav_about', 'About'), href: '#about' },
+    { name: t('nav_services', 'Services'), href: '#services' },
+    { name: t('nav_facilities', 'Facilities'), href: '#facilities' },
+    { name: t('nav_doctors', 'Doctors'), href: '#doctors' },
+    { name: t('nav_reviews', 'Reviews'), href: '#reviews' },
+    { name: t('nav_faq', 'FAQ'), href: '#faq' },
+    { name: t('nav_contact', 'Contact'), href: '#contact' },
   ];
 
-  const popularTreatments = [
-    'General Dentistry',
-    'Root Canal Treatment',
-    'Dental Implants',
-    'Orthodontics',
-    'Teeth Whitening',
-    'Cosmetic Dentistry',
+  const popularTreatments = isHindi ? [
+    { name: 'जनरल डेंटिस्ट्री व सफाई', key: 'general-dentistry' },
+    { name: 'दर्द-रहित रूट कैनाल ट्रीटमेंट', key: 'root-canal' },
+    { name: 'स्थायी डेंटल इम्प्लांट्स', key: 'dental-implants' },
+    { name: 'ऑर्थोडॉन्टिक्स व अलाइनर्स', key: 'orthodontics' },
+    { name: 'टीथ व्हाइटनिंग (दांत चमकाना)', key: 'teeth-whitening' },
+    { name: 'कॉस्मेटिक स्माइल मेकओवर', key: 'cosmetic-dentistry' },
+  ] : [
+    { name: 'General Dentistry', key: 'general-dentistry' },
+    { name: 'Root Canal Treatment', key: 'root-canal' },
+    { name: 'Dental Implants', key: 'dental-implants' },
+    { name: 'Orthodontics', key: 'orthodontics' },
+    { name: 'Teeth Whitening', key: 'teeth-whitening' },
+    { name: 'Cosmetic Dentistry', key: 'cosmetic-dentistry' },
   ];
 
   const handleSmoothScroll = (e, href) => {
@@ -45,7 +55,7 @@ export default function Footer({ onBookClick, onOpenPrivacy, onOpenTerms, onSele
   };
 
   return (
-    <footer className="bg-[#0b1f36] text-white pt-12 sm:pt-16 pb-24 sm:pb-12 border-t border-blue-950/60 relative">
+    <footer className="bg-[#0b1f36] dark:bg-[#050e18] text-white pt-12 sm:pt-16 pb-24 sm:pb-12 border-t border-blue-950/60 dark:border-slate-800/80 relative transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Main Footer Grid */}
@@ -74,11 +84,11 @@ export default function Footer({ onBookClick, onOpenPrivacy, onOpenTerms, onSele
             </div>
 
             <p className="text-sm text-sky-200/90 font-medium italic">
-              "{HOSPITAL_INFO.tagline}"
+              "{t('footer_tagline', HOSPITAL_INFO.tagline)}"
             </p>
 
             <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-              SmileCare Dental Hospital provides advanced, gentle, and comprehensive dental treatments in a state-of-the-art sterile hospital setting.
+              {t('footer_about_text', 'SmileCare Dental Hospital provides advanced, gentle, and comprehensive dental treatments in a state-of-the-art sterile hospital setting.')}
             </p>
 
             {/* Social Icons */}
@@ -102,7 +112,7 @@ export default function Footer({ onBookClick, onOpenPrivacy, onOpenTerms, onSele
                 className="w-9 h-9 rounded-xl bg-white/10 hover:bg-blue-600 text-white flex items-center justify-center transition-colors"
               >
                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M9 8H6v4h3v12h5V12h3.642L18 8h-4V6.333C14 5.374 14.5 5 15.7 5H18V0h-3.808C10.597 0 9 1.583 9 4.615V8z"/>
+                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
                 </svg>
               </a>
               <a
@@ -113,127 +123,128 @@ export default function Footer({ onBookClick, onOpenPrivacy, onOpenTerms, onSele
                 className="w-9 h-9 rounded-xl bg-white/10 hover:bg-red-600 text-white flex items-center justify-center transition-colors"
               >
                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
                 </svg>
               </a>
             </div>
           </div>
 
-          {/* Col 2: Quick Links (2 cols) */}
-          <div className="lg:col-span-2 space-y-3">
-            <h4 className="text-sm font-bold uppercase tracking-wider text-sky-400 font-heading">
-              Quick Links
+          {/* Col 2: Quick Links (2.5 cols) */}
+          <div className="lg:col-span-2 space-y-4">
+            <h4 className="text-sm font-bold uppercase tracking-wider text-white font-heading">
+              {t('footer_quick_links', 'Quick Navigation')}
             </h4>
-            <ul className="space-y-2 text-xs sm:text-sm text-slate-300">
+            <ul className="space-y-2.5 text-xs sm:text-sm text-slate-300">
               {quickLinks.map((link) => (
-                <li key={link.name}>
+                <li key={link.href}>
                   <a
                     href={link.href}
                     onClick={(e) => handleSmoothScroll(e, link.href)}
-                    className="hover:text-white transition-colors flex items-center gap-1.5"
+                    className="hover:text-sky-300 transition-colors block"
                   >
-                    <span>{link.name}</span>
+                    {link.name}
                   </a>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Col 3: Popular Treatments (3 cols) */}
-          <div className="lg:col-span-3 space-y-3">
-            <h4 className="text-sm font-bold uppercase tracking-wider text-sky-400 font-heading">
-              Popular Treatments
+          {/* Col 3: Services (2.5 cols) */}
+          <div className="lg:col-span-3 space-y-4">
+            <h4 className="text-sm font-bold uppercase tracking-wider text-white font-heading">
+              {t('footer_services', 'Popular Treatments')}
             </h4>
-            <ul className="space-y-2 text-xs sm:text-sm text-slate-300">
+            <ul className="space-y-2.5 text-xs sm:text-sm text-slate-300">
               {popularTreatments.map((treatment) => (
-                <li key={treatment}>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      if (onSelectServiceByName) onSelectServiceByName(treatment);
+                <li key={treatment.key}>
+                  <a
+                    href="#services"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      if (onSelectServiceByName) onSelectServiceByName(treatment.key);
+                      const el = document.querySelector('#services');
+                      if (el) el.scrollIntoView({ behavior: 'smooth' });
                     }}
-                    className="hover:text-white hover:underline transition-colors text-left cursor-pointer"
+                    className="hover:text-sky-300 transition-colors block truncate"
                   >
-                    {treatment}
-                  </button>
+                    {treatment.name}
+                  </a>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Col 4: Contact & Hours (3 cols) */}
-          <div className="lg:col-span-3 space-y-3">
-            <h4 className="text-sm font-bold uppercase tracking-wider text-sky-400 font-heading">
-              Contact Hospital
+          {/* Col 4: Contact & OPD Hours (3 cols) */}
+          <div className="lg:col-span-3 space-y-4">
+            <h4 className="text-sm font-bold uppercase tracking-wider text-white font-heading">
+              {t('footer_contact_info', 'Hospital Contact')}
             </h4>
             <div className="space-y-3 text-xs sm:text-sm text-slate-300">
               <div className="flex items-start gap-2.5">
-                <MapPin className="w-4 h-4 text-teal-400 shrink-0 mt-0.5" />
-                <span>123 Dental Avenue, Patna, Bihar, India</span>
+                <MapPin className="w-4 h-4 text-sky-400 shrink-0 mt-0.5" />
+                <span className="leading-snug">{isHindi ? "123 डेंटल एवेन्यू, गांधी मैदान के पास, पटना, बिहार" : "123 Dental Avenue, Near Gandhi Maidan, Patna, Bihar"}</span>
               </div>
               <div className="flex items-center gap-2.5">
                 <Phone className="w-4 h-4 text-sky-400 shrink-0" />
-                <a href={`tel:${HOSPITAL_INFO.phoneRaw}`} className="hover:text-white">
+                <a href={`tel:${HOSPITAL_INFO.phoneRaw}`} className="hover:text-sky-300 font-semibold">
                   {HOSPITAL_INFO.phone}
                 </a>
               </div>
               <div className="flex items-center gap-2.5">
                 <Mail className="w-4 h-4 text-sky-400 shrink-0" />
-                <a href={`mailto:${HOSPITAL_INFO.email}`} className="hover:text-white">
+                <a href={`mailto:${HOSPITAL_INFO.email}`} className="hover:text-sky-300">
                   {HOSPITAL_INFO.email}
                 </a>
               </div>
-              <div className="flex items-start gap-2.5 pt-1 text-slate-400">
-                <Clock className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
-                <div>
-                  <p>Mon – Sat: 9:00 AM – 8:00 PM</p>
-                  <p>Sun: 10:00 AM – 2:00 PM</p>
+              <div className="flex items-start gap-2.5 pt-1">
+                <Clock className="w-4 h-4 text-sky-400 shrink-0 mt-0.5" />
+                <div className="text-[11px] sm:text-xs leading-tight text-slate-400">
+                  <div className="text-slate-300 font-medium">{isHindi ? "ओपीडी: सोम – शनि (9:00 AM – 8:00 PM)" : "OPD: Mon – Sat (9:00 AM – 8:00 PM)"}</div>
+                  <div>{isHindi ? "रविवार: 10:00 AM – 2:00 PM" : "Sunday: 10:00 AM – 2:00 PM"}</div>
                 </div>
               </div>
             </div>
 
-            <div className="pt-2">
-              <button
-                type="button"
-                onClick={onBookClick}
-                className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-xs text-white bg-blue-600 hover:bg-blue-500 shadow-md transition-colors cursor-pointer"
-              >
-                <Calendar className="w-3.5 h-3.5 text-sky-200" />
-                <span>Book Appointment Online</span>
-              </button>
-            </div>
+            <button
+              type="button"
+              onClick={onBookClick}
+              className="mt-2 w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-xs font-bold text-white bg-blue-600 hover:bg-blue-500 shadow-md transition-colors cursor-pointer"
+            >
+              <Calendar className="w-3.5 h-3.5" />
+              <span>{t('book_appointment', 'Book Appointment')}</span>
+            </button>
           </div>
 
         </div>
 
-        {/* Bottom Bar: Copyright & Policies */}
+        {/* Bottom Strip */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
-          <div>
-            © 2026 {HOSPITAL_INFO.name}. All Rights Reserved.
-          </div>
+          <p>
+            © {new Date().getFullYear()} {t('footer_rights', 'SmileCare Dental Hospital. All rights reserved.')}
+          </p>
 
           <div className="flex items-center gap-6">
             <button
               type="button"
               onClick={onOpenPrivacy}
-              className="hover:text-slate-200 transition-colors cursor-pointer"
+              className="hover:text-sky-300 transition-colors underline-offset-4 hover:underline cursor-pointer"
             >
-              Privacy Policy
+              {t('footer_privacy', 'Privacy Policy')}
             </button>
             <button
               type="button"
               onClick={onOpenTerms}
-              className="hover:text-slate-200 transition-colors cursor-pointer"
+              className="hover:text-sky-300 transition-colors underline-offset-4 hover:underline cursor-pointer"
             >
-              Terms & Conditions
+              {t('footer_terms', 'Terms of Service')}
             </button>
             <button
               type="button"
               onClick={scrollToTop}
-              className="inline-flex items-center gap-1 text-slate-400 hover:text-white transition-colors cursor-pointer ml-2"
-              title="Back to top"
+              className="inline-flex items-center gap-1 hover:text-white transition-colors cursor-pointer"
+              title="Scroll back to top"
             >
-              <span>Top</span>
+              <span>{t('footer_back_to_top', 'Back to top')}</span>
               <ArrowUp className="w-3.5 h-3.5" />
             </button>
           </div>
