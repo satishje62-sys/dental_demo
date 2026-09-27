@@ -18,16 +18,20 @@ import {
   HelpCircle,
   Mail,
   Moon,
-  Sun
+  Sun,
+  Globe,
+  Check
 } from 'lucide-react';
 import { HOSPITAL_INFO } from '../data/dentalData';
 import { useTheme } from '../contexts/ThemeContext';
+import { useLanguage } from '../contexts/LanguageContext';
 
 export default function Navbar({ onBookClick }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
   const { isDark, toggleTheme } = useTheme();
+  const { currentLang, changeLanguage } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -100,8 +104,11 @@ export default function Navbar({ onBookClick }) {
 
   return (
     <>
+      {/* Hidden container for Google Translate Engine */}
+      <div id="google_translate_element" className="sr-only" aria-hidden="true"></div>
+
       {/* Top Notification Bar */}
-      <div className="bg-[#0b1f36] text-white text-[11px] sm:text-xs py-1.5 sm:py-2 px-3 sm:px-4 border-b border-blue-950/40">
+      <div className="bg-[#0b1f36] dark:bg-[#07101d] text-white text-[11px] sm:text-xs py-1.5 sm:py-2 px-3 sm:px-4 border-b border-blue-950/40 dark:border-slate-800/60">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-2">
           {/* Mobile concise emergency view */}
           <div className="flex items-center gap-2 sm:hidden w-full justify-between">
@@ -150,8 +157,8 @@ export default function Navbar({ onBookClick }) {
       <header 
         className={`sticky top-0 z-40 w-full transition-colors duration-200 ${
           isScrolled 
-            ? 'bg-white dark:bg-[#0b1f36] shadow-sm border-b border-slate-100 dark:border-slate-800 py-2.5 sm:py-3' 
-            : 'bg-white dark:bg-[#0b1f36] border-b border-slate-100/80 dark:border-slate-800 py-3 sm:py-4'
+            ? 'bg-white dark:bg-[#0c1e33] shadow-md border-b border-slate-100 dark:border-slate-800/80 py-2.5 sm:py-3' 
+            : 'bg-white dark:bg-[#0c1e33] border-b border-slate-100/80 dark:border-slate-800/60 py-3 sm:py-4'
         }`}
       >
         <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8">
@@ -193,8 +200,8 @@ export default function Navbar({ onBookClick }) {
                   onClick={(e) => handleLinkClick(e, link.href)}
                   className={`px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
                     activeSection === link.id
-                      ? 'text-blue-700 bg-blue-50/80 dark:text-sky-400 dark:bg-sky-900/30 font-semibold'
-                      : 'text-slate-600 dark:text-slate-300 hover:text-[#0b1f36] dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800'
+                      ? 'text-blue-700 bg-blue-50/80 dark:text-sky-400 dark:bg-sky-900/40 font-semibold'
+                      : 'text-slate-600 dark:text-slate-300 hover:text-[#0b1f36] dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/60'
                   }`}
                 >
                   {link.name}
@@ -203,17 +210,48 @@ export default function Navbar({ onBookClick }) {
             </nav>
 
             {/* Desktop Action Buttons & Toggles */}
-            <div className="hidden sm:flex items-center gap-3">
-              <div id="google_translate_element" className="mr-2"></div>
+            <div className="hidden sm:flex items-center gap-2.5 lg:gap-3">
               
+              {/* Premium Language Switcher Segmented Control */}
+              <div className="flex items-center p-1 bg-slate-100 dark:bg-slate-800 rounded-xl border border-slate-200/80 dark:border-slate-700/80 text-xs font-bold">
+                <button
+                  type="button"
+                  onClick={() => changeLanguage('en')}
+                  className={`px-2.5 py-1.5 rounded-lg transition-all flex items-center gap-1 cursor-pointer ${
+                    currentLang === 'en'
+                      ? 'bg-white dark:bg-[#0c1e33] text-blue-800 dark:text-sky-300 shadow-xs'
+                      : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white'
+                  }`}
+                >
+                  <span>🇬🇧</span>
+                  <span>EN</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => changeLanguage('hi')}
+                  className={`px-2.5 py-1.5 rounded-lg transition-all flex items-center gap-1 cursor-pointer ${
+                    currentLang === 'hi'
+                      ? 'bg-white dark:bg-[#0c1e33] text-blue-800 dark:text-sky-300 shadow-xs font-bold'
+                      : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white'
+                  }`}
+                >
+                  <span>🇮🇳</span>
+                  <span>हिन्दी</span>
+                </button>
+              </div>
+
+              {/* Theme Toggle Button */}
               <button
+                type="button"
                 onClick={toggleTheme}
-                className="p-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
-                aria-label="Toggle theme"
+                title={isDark ? "Switch to Day Mode" : "Switch to Night Mode"}
+                className="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-amber-300 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200/60 dark:border-slate-700/60 transition-colors cursor-pointer"
+                aria-label="Toggle dark/light theme"
               >
-                {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+                {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4 text-slate-700" />}
               </button>
 
+              {/* Phone call pill */}
               <a
                 href={`tel:${HOSPITAL_INFO.phoneRaw}`}
                 className="hidden xl:inline-flex items-center gap-2 px-3 py-2 text-sm font-semibold text-slate-700 dark:text-slate-200 hover:text-blue-700 dark:hover:text-sky-400 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
@@ -224,38 +262,57 @@ export default function Navbar({ onBookClick }) {
                 <span>{HOSPITAL_INFO.phone}</span>
               </a>
 
+              {/* Book Appointment CTA */}
               <button
                 type="button"
                 onClick={onBookClick}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm text-white bg-gradient-to-r from-[#0f2b48] to-[#1e4e85] dark:from-sky-600 dark:to-blue-800 hover:from-[#0b1f36] hover:to-[#153860] shadow-md shadow-blue-900/15 transition-all transform hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
+                className="inline-flex items-center gap-2 px-4.5 py-2.5 rounded-xl font-semibold text-sm text-white bg-gradient-to-r from-[#0f2b48] to-[#1e4e85] dark:from-sky-600 dark:to-blue-800 hover:from-[#0b1f36] hover:to-[#153860] shadow-md shadow-blue-900/15 transition-all transform hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
               >
                 <Calendar className="w-4 h-4 text-sky-300 dark:text-sky-200" />
                 <span>Book Appointment</span>
               </button>
             </div>
 
-            {/* Mobile Actions: Book pill + 3-line Hamburger Button */}
-            <div className="flex items-center gap-2 sm:hidden">
+            {/* Mobile Actions: Language pill + Theme toggle + Book pill + 3-line Hamburger Button */}
+            <div className="flex items-center gap-1.5 sm:hidden">
+              
+              {/* Mobile Quick Language Toggle */}
               <button
+                type="button"
+                onClick={() => changeLanguage(currentLang === 'en' ? 'hi' : 'en')}
+                className="px-2 py-1.5 rounded-lg text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-sky-300 border border-slate-200/80 dark:border-slate-700 flex items-center gap-1 cursor-pointer active:scale-95 transition-transform"
+                aria-label="Change Language"
+                title="Change language / भाषा बदलें"
+              >
+                <Globe className="w-3.5 h-3.5 text-sky-600 dark:text-sky-400" />
+                <span>{currentLang === 'en' ? 'हिन्दी' : 'ENG'}</span>
+              </button>
+
+              {/* Mobile Theme Toggle */}
+              <button
+                type="button"
                 onClick={toggleTheme}
-                className="p-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300"
+                className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-amber-300 border border-slate-200/60 dark:border-slate-700 active:scale-95 transition-transform cursor-pointer"
                 aria-label="Toggle theme"
               >
-                {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+                {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4 text-slate-700" />}
               </button>
+
+              {/* Mobile Book Button */}
               <button
                 type="button"
                 onClick={onBookClick}
-                className="px-3 py-1.5 text-xs font-bold text-white bg-[#0f2b48] dark:bg-sky-700 active:bg-[#0b1f36] rounded-lg shadow-xs flex items-center gap-1 cursor-pointer"
+                className="px-2.5 py-1.5 text-xs font-bold text-white bg-[#0f2b48] dark:bg-sky-700 active:bg-[#0b1f36] rounded-lg shadow-xs flex items-center gap-1 cursor-pointer"
               >
-                <Calendar className="w-3 h-3 text-sky-300 dark:text-sky-100" />
+                <Calendar className="w-3.5 h-3.5 text-sky-300" />
                 <span>Book</span>
               </button>
 
+              {/* Mobile Hamburger Menu Button */}
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen(true)}
-                className="w-10 h-10 rounded-xl text-slate-800 dark:text-white bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 active:bg-slate-300 flex items-center justify-center focus:outline-none transition-colors cursor-pointer"
+                className="w-9 h-9 rounded-lg text-slate-800 dark:text-white bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 active:bg-slate-300 flex items-center justify-center focus:outline-none border border-slate-200/60 dark:border-slate-700 transition-colors cursor-pointer"
                 aria-label="Open navigation sidebar"
               >
                 <Menu className="w-5 h-5" />
@@ -276,15 +333,15 @@ export default function Navbar({ onBookClick }) {
           
           {/* Semi-transparent Backdrop: Clicking closes the sidebar */}
           <div 
-            className="fixed inset-0 bg-slate-950/60 backdrop-blur-xs transition-opacity animate-in fade-in duration-200"
+            className="fixed inset-0 bg-slate-950/70 backdrop-blur-xs transition-opacity animate-in fade-in duration-200"
             onClick={() => setMobileMenuOpen(false)}
           />
 
           {/* Right-Side Drawer Panel */}
-          <div className="relative w-[84%] max-w-sm bg-white dark:bg-[#071526] h-full shadow-2xl flex flex-col z-[101] animate-in slide-in-from-right duration-200">
+          <div className="relative w-[86%] max-w-sm bg-white dark:bg-[#081729] h-full shadow-2xl flex flex-col z-[101] animate-in slide-in-from-right duration-200 border-l border-slate-200 dark:border-slate-800">
             
             {/* Sidebar Top Header */}
-            <div className="px-5 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/70 shrink-0">
+            <div className="px-5 py-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50/80 dark:bg-[#0c1e33] shrink-0">
               <div className="flex items-center gap-2.5">
                 <div className="w-8 h-8 rounded-lg bg-[#0f2b48] flex items-center justify-center text-white">
                   <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none">
@@ -296,10 +353,10 @@ export default function Navbar({ onBookClick }) {
                   </svg>
                 </div>
                 <div>
-                  <span className="font-heading font-bold text-base text-[#0b1f36] block leading-tight">
+                  <span className="font-heading font-bold text-base text-[#0b1f36] dark:text-white block leading-tight">
                     SmileCare
                   </span>
-                  <span className="text-[9px] uppercase tracking-wider font-semibold text-sky-600 block">
+                  <span className="text-[9px] uppercase tracking-wider font-semibold text-sky-600 dark:text-sky-400 block">
                     Dental Hospital
                   </span>
                 </div>
@@ -309,7 +366,7 @@ export default function Navbar({ onBookClick }) {
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen(false)}
-                className="w-9 h-9 rounded-full bg-slate-100 active:bg-slate-200 text-slate-700 flex items-center justify-center transition-colors cursor-pointer"
+                className="w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 active:bg-slate-200 text-slate-700 dark:text-slate-200 flex items-center justify-center transition-colors cursor-pointer"
                 aria-label="Close menu"
               >
                 <X className="w-5 h-5" />
@@ -317,53 +374,119 @@ export default function Navbar({ onBookClick }) {
             </div>
 
             {/* Sidebar Scrollable Body */}
-            <div className="flex-1 overflow-y-auto px-4 py-3 space-y-1 overscroll-contain">
+            <div className="flex-1 overflow-y-auto px-4 py-3 space-y-3 overscroll-contain">
               
-              <div className="px-2 py-1 text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center justify-between">
-                <span>Menu Options</span>
-                <span className="text-teal-600 font-semibold lowercase bg-teal-50 px-2 py-0.5 rounded-full">
+              {/* Language Selection Card in Sidebar */}
+              <div className="p-3 rounded-2xl bg-slate-50 dark:bg-[#0c1e33] border border-slate-200/80 dark:border-slate-700/80 space-y-2">
+                <div className="flex items-center justify-between text-xs font-bold text-slate-700 dark:text-slate-300 px-1">
+                  <div className="flex items-center gap-1.5">
+                    <Globe className="w-3.5 h-3.5 text-sky-600 dark:text-sky-400" />
+                    <span>Select Language / भाषा चुनें</span>
+                  </div>
+                  <span className="text-[10px] uppercase font-bold text-sky-600 dark:text-sky-400 bg-sky-50 dark:bg-sky-950/60 px-2 py-0.5 rounded-md">
+                    {currentLang === 'hi' ? 'हिन्दी' : 'English'}
+                  </span>
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => changeLanguage('en')}
+                    className={`py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
+                      currentLang === 'en'
+                        ? 'bg-blue-700 text-white shadow-sm'
+                        : 'bg-white dark:bg-[#081729] text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700'
+                    }`}
+                  >
+                    <span>🇬🇧 English</span>
+                    {currentLang === 'en' && <Check className="w-3.5 h-3.5" />}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => changeLanguage('hi')}
+                    className={`py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
+                      currentLang === 'hi'
+                        ? 'bg-blue-700 text-white shadow-sm'
+                        : 'bg-white dark:bg-[#081729] text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700'
+                    }`}
+                  >
+                    <span>🇮🇳 हिन्दी</span>
+                    {currentLang === 'hi' && <Check className="w-3.5 h-3.5" />}
+                  </button>
+                </div>
+              </div>
+
+              {/* Theme Selection in Sidebar */}
+              <div className="p-3 rounded-2xl bg-slate-50 dark:bg-[#0c1e33] border border-slate-200/80 dark:border-slate-700/80 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-lg bg-amber-100 dark:bg-amber-950/50 flex items-center justify-center text-amber-600 dark:text-amber-400">
+                    {isDark ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
+                  </div>
+                  <div>
+                    <span className="text-xs font-bold text-slate-800 dark:text-white block">
+                      {isDark ? 'Night Mode Active' : 'Day Mode Active'}
+                    </span>
+                    <span className="text-[10px] text-slate-500 dark:text-slate-400">
+                      {isDark ? 'Dark theme enabled' : 'Light theme enabled'}
+                    </span>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={toggleTheme}
+                  className="px-3 py-1.5 rounded-xl text-xs font-bold bg-white dark:bg-[#081729] text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 active:scale-95 transition-all cursor-pointer shadow-xs"
+                >
+                  {isDark ? '☀️ Switch Day' : '🌙 Switch Night'}
+                </button>
+              </div>
+
+              <div className="px-2 pt-2 text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center justify-between">
+                <span>Hospital Navigation</span>
+                <span className="text-teal-600 dark:text-teal-400 font-semibold lowercase bg-teal-50 dark:bg-teal-950/50 px-2 py-0.5 rounded-full">
                   open today
                 </span>
               </div>
 
               {/* All 8 Menu Links */}
-              {navLinks.map((link) => {
-                const Icon = link.icon;
-                const isActive = activeSection === link.id;
+              <div className="space-y-1">
+                {navLinks.map((link) => {
+                  const Icon = link.icon;
+                  const isActive = activeSection === link.id;
 
-                return (
-                  <a
-                    key={link.id}
-                    href={link.href}
-                    onClick={(e) => handleLinkClick(e, link.href)}
-                    className={`flex items-center justify-between py-3 px-3.5 rounded-xl text-sm font-semibold transition-all active:scale-[0.98] ${
-                      isActive
-                        ? 'text-blue-700 bg-blue-50 border border-blue-100 font-bold'
-                        : 'text-slate-700 hover:bg-slate-50'
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className={`w-7 h-7 rounded-lg flex items-center justify-center ${
-                        isActive ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-500'
-                      }`}>
-                        <Icon className="w-4 h-4" />
+                  return (
+                    <a
+                      key={link.id}
+                      href={link.href}
+                      onClick={(e) => handleLinkClick(e, link.href)}
+                      className={`flex items-center justify-between py-3 px-3.5 rounded-xl text-sm font-semibold transition-all active:scale-[0.98] ${
+                        isActive
+                          ? 'text-blue-700 dark:text-sky-300 bg-blue-50 dark:bg-sky-900/40 border border-blue-100 dark:border-sky-800/60 font-bold'
+                          : 'text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/50'
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className={`w-7 h-7 rounded-lg flex items-center justify-center ${
+                          isActive ? 'bg-blue-600 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400'
+                        }`}>
+                          <Icon className="w-4 h-4" />
+                        </div>
+                        <span>{link.name}</span>
                       </div>
-                      <span>{link.name}</span>
-                    </div>
-                    <ChevronRight className={`w-4 h-4 ${isActive ? 'text-blue-600' : 'text-slate-400'}`} />
-                  </a>
-                );
-              })}
+                      <ChevronRight className={`w-4 h-4 ${isActive ? 'text-blue-600 dark:text-sky-400' : 'text-slate-400 dark:text-slate-500'}`} />
+                    </a>
+                  );
+                })}
+              </div>
 
               {/* Action Buttons inside Sidebar */}
-              <div className="pt-4 mt-2 border-t border-slate-100 space-y-2.5">
+              <div className="pt-3 mt-2 border-t border-slate-100 dark:border-slate-800 space-y-2.5">
                 <button
                   type="button"
                   onClick={() => {
                     setMobileMenuOpen(false);
                     onBookClick();
                   }}
-                  className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-[#0f2b48] to-[#1e4e85] active:from-[#0b1f36] shadow-md shadow-blue-900/15 cursor-pointer"
+                  className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-[#0f2b48] to-[#1e4e85] dark:from-sky-600 dark:to-blue-800 active:from-[#0b1f36] shadow-md shadow-blue-900/15 cursor-pointer"
                 >
                   <Calendar className="w-4 h-4 text-sky-300" />
                   <span>Book Appointment</span>
@@ -372,9 +495,9 @@ export default function Navbar({ onBookClick }) {
                 <div className="grid grid-cols-2 gap-2">
                   <a
                     href={`tel:${HOSPITAL_INFO.phoneRaw}`}
-                    className="flex items-center justify-center gap-1.5 py-2.5 rounded-xl font-semibold text-xs text-slate-800 bg-slate-100 active:bg-slate-200"
+                    className="flex items-center justify-center gap-1.5 py-2.5 rounded-xl font-semibold text-xs text-slate-800 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700 active:bg-slate-200"
                   >
-                    <Phone className="w-3.5 h-3.5 text-blue-700" />
+                    <Phone className="w-3.5 h-3.5 text-blue-700 dark:text-sky-400" />
                     <span>Call Helpline</span>
                   </a>
 
@@ -382,9 +505,9 @@ export default function Navbar({ onBookClick }) {
                     href={`https://wa.me/${HOSPITAL_INFO.whatsapp}?text=${encodeURIComponent(HOSPITAL_INFO.whatsappText)}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-1.5 py-2.5 rounded-xl font-semibold text-xs text-emerald-800 bg-emerald-50 active:bg-emerald-100 border border-emerald-200"
+                    className="flex items-center justify-center gap-1.5 py-2.5 rounded-xl font-semibold text-xs text-emerald-800 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/40 active:bg-emerald-100 border border-emerald-200 dark:border-emerald-800"
                   >
-                    <MessageSquare className="w-3.5 h-3.5 text-emerald-600" />
+                    <MessageSquare className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
                     <span>WhatsApp</span>
                   </a>
                 </div>
@@ -393,13 +516,13 @@ export default function Navbar({ onBookClick }) {
             </div>
 
             {/* Sidebar Bottom Info Footer */}
-            <div className="p-4 border-t border-slate-100 bg-slate-50 text-[11px] text-slate-500 space-y-1 shrink-0">
-              <div className="flex items-center gap-1.5 text-slate-700 font-medium">
-                <MapPin className="w-3.5 h-3.5 text-teal-600 shrink-0" />
+            <div className="p-4 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-[#0c1e33] text-[11px] text-slate-500 dark:text-slate-400 space-y-1 shrink-0">
+              <div className="flex items-center gap-1.5 text-slate-700 dark:text-slate-300 font-medium">
+                <MapPin className="w-3.5 h-3.5 text-teal-600 dark:text-teal-400 shrink-0" />
                 <span className="truncate">123 Dental Avenue, Patna</span>
               </div>
-              <div className="flex items-center gap-1.5 text-slate-500">
-                <Clock className="w-3.5 h-3.5 text-sky-600 shrink-0" />
+              <div className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400">
+                <Clock className="w-3.5 h-3.5 text-sky-600 dark:text-sky-400 shrink-0" />
                 <span>Mon – Sat: 9:00 AM – 8:00 PM</span>
               </div>
             </div>

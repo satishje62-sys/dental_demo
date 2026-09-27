@@ -72,7 +72,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#fafbfc] text-slate-800 antialiased selection:bg-blue-600 selection:text-white">
+    <div className="min-h-screen flex flex-col bg-[#fafbfc] dark:bg-[#071322] text-slate-800 dark:text-slate-100 antialiased selection:bg-blue-600 selection:text-white transition-colors duration-300">
       {/* 1. Sticky Responsive Navbar */}
       <Navbar onBookClick={scrollToBooking} />
 
